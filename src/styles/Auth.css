@@ -1,0 +1,100 @@
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 200px);
+  padding: 40px 20px;
+}
+
+.auth-card {
+  background: white;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  width: 100%;
+  max-width: 400px;
+}
+
+.auth-card h1 {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.auth-card form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.error-message {
+  background: #FFF5F5;
+  color: #C62828;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  margin-bottom: 12px;
+}
+
+.auth-card input,
+.auth-card textarea {
+  padding: 12px;
+  border: 1px solid var(--accent);
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: inherit;
+}
+
+.auth-card input:focus,
+.auth-card textarea:focus {
+  outline: none;
+  border-color: var(--secondary);
+}
+
+.auth-card button[type="submit"] {
+  padding: 14px;
+  background: var(--primary);
+  color: white;
+  font-weight: 700;
+  border-radius: 8px;
+  font-size: 16px;
+  letter-spacing: 0.3px;
+  transition: background 0.2s;
+  margin-top: 8px;
+}
+
+.auth-card button[type="submit"]:hover:not(:disabled) {
+  background: #2a2a2a;
+}
+
+.auth-card button[type="submit"]:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.auth-card p {
+  text-align: center;
+  font-size: 13px;
+  margin-top: 16px;
+}
+
+.auth-card a {
+  color: var(--secondary);
+  font-weight: 600;
+  transition: color 0.2s;
+}
+
+.auth-card a:hover {
+  color: var(--primary);
+}
+
+@media (max-width: 480px) {
+  .auth-card {
+    padding: 24px;
+  }
+
+  .auth-card h1 {
+    font-size: 20px;
+  }
+}

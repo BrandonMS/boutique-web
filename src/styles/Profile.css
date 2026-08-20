@@ -1,0 +1,158 @@
+.profile {
+  padding: 40px 0;
+}
+
+.profile h1 {
+  font-size: 28px;
+  margin-bottom: 32px;
+}
+
+.profile-container {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 40px;
+  margin-bottom: 40px;
+}
+
+.avatar-section {
+  text-align: center;
+}
+
+.avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: var(--secondary);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+  font-weight: 700;
+  margin: 0 auto 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.avatar-section h2 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.role-badge {
+  display: inline-block;
+  background: var(--accent);
+  color: var(--secondary);
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.profile-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.section {
+  background: white;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.section h3 {
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  letter-spacing: 0.3px;
+}
+
+.info-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background: var(--bg);
+  border-radius: 8px;
+}
+
+.info-card .icon {
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.info-card .label {
+  font-size: 12px;
+  color: var(--secondary);
+  margin-bottom: 4px;
+}
+
+.info-card .value {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--primary);
+  text-transform: capitalize;
+}
+
+.pref-item,
+.support-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background: var(--bg);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.pref-item:hover,
+.support-item:hover {
+  background: var(--accent);
+}
+
+.pref-item .icon,
+.support-item .icon {
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.pref-item span:last-child,
+.support-item span:last-child {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.logout-btn {
+  width: 100%;
+  padding: 16px;
+  background: var(--primary);
+  color: white;
+  font-weight: 700;
+  border-radius: 8px;
+  font-size: 16px;
+  letter-spacing: 0.3px;
+  transition: background 0.2s;
+}
+
+.logout-btn:hover {
+  background: #2a2a2a;
+}
+
+@media (max-width: 768px) {
+  .profile-container {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .profile-sections {
+    gap: 16px;
+  }
+
+  .section {
+    padding: 16px;
+  }
+}

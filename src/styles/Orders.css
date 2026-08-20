@@ -1,0 +1,167 @@
+.orders {
+  padding: 40px 0;
+}
+
+.orders h1 {
+  font-size: 28px;
+  margin-bottom: 32px;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 80px 20px;
+}
+
+.empty-state .icon {
+  font-size: 64px;
+  display: block;
+  margin-bottom: 16px;
+}
+
+.empty-state h2 {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.empty-state p {
+  color: var(--text-light);
+  margin-bottom: 24px;
+}
+
+.empty-state a {
+  display: inline-block;
+  background: var(--primary);
+  color: white;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+.orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.order-card {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.order-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.order-header h3 {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.order-header .date {
+  font-size: 12px;
+  color: var(--secondary);
+}
+
+.status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border-radius: 8px;
+}
+
+.status.pending {
+  background: #FFF8E1;
+}
+
+.status.pending .icon,
+.status.pending .text {
+  color: #F57F17;
+}
+
+.status.completed {
+  background: #E8F5E9;
+}
+
+.status.completed .icon,
+.status.completed .text {
+  color: #1B5E20;
+}
+
+.status.shipped {
+  background: #E3F2FD;
+}
+
+.status.shipped .icon,
+.status.shipped .text {
+  color: #1565C0;
+}
+
+.status.cancelled {
+  background: #FFEBEE;
+}
+
+.status.cancelled .icon,
+.status.cancelled .text {
+  color: #C62828;
+}
+
+.status .icon {
+  font-size: 14px;
+}
+
+.status .text {
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.order-details {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  font-size: 13px;
+}
+
+.detail-row span:first-child {
+  color: var(--secondary);
+  font-weight: 600;
+  flex: 0 0 100px;
+}
+
+.detail-row span:last-child {
+  font-weight: 600;
+  color: var(--primary);
+  text-align: right;
+  flex: 1;
+}
+
+.detail-row .amount {
+  font-size: 15px;
+  color: var(--secondary);
+}
+
+@media (max-width: 768px) {
+  .order-header {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .order-card {
+    padding: 16px;
+  }
+}
