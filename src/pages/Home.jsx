@@ -9,6 +9,19 @@ export const Home = () => {
 
   useEffect(() => {
     loadData();
+
+    const refreshWhenVisible = () => {
+      if (document.visibilityState === 'visible') {
+        loadData();
+      }
+    };
+    const refreshInterval = window.setInterval(loadData, 30000);
+    document.addEventListener('visibilitychange', refreshWhenVisible);
+
+    return () => {
+      window.clearInterval(refreshInterval);
+      document.removeEventListener('visibilitychange', refreshWhenVisible);
+    };
   }, []);
 
   const loadData = async () => {

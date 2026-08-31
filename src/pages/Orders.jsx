@@ -78,6 +78,12 @@ export const Orders = () => {
                       <span>{order.shipping_address}</span>
                     </div>
                   )}
+                  {order.tracking_url && (
+                    <div className="detail-row">
+                      <span>Tracking</span>
+                      <a href={order.tracking_url} target="_blank" rel="noreferrer">Tracking Number</a>
+                    </div>
+                  )}
                 </div>
               </div>
             );

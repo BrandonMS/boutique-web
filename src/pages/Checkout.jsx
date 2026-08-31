@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../stores/cartStore';
+import { useAuth } from '../stores/authStore';
 import { orderService } from '../services/api';
 import '../styles/Checkout.css';
 
 export const Checkout = () => {
   const navigate = useNavigate();
   const { items, getTotal, clearCart } = useCart();
+  const { token } = useAuth();
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
     firstName: '',
@@ -22,6 +24,12 @@ export const Checkout = () => {
   const updateField = (key, value) => setForm({ ...form, [key]: value });
 
   const handlePlaceOrder = async () => {
+    if (!token) {
+      alert('Please sign in before placing an order.');
+      navigate('/login');
+      return;
+    }
+
     if (!form.firstName || !form.lastName || !form.email || !form.address) {
       alert('Please fill in all required fields');
       return;
