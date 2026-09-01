@@ -29,11 +29,70 @@
   font-size: 14px;
   letter-spacing: 0.5px;
   transition: transform 0.2s, box-shadow 0.2s;
+  cursor: pointer;
 }
 
 .cta-button:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Search & Filter Section */
+.search-section {
+  margin: 40px 0;
+}
+
+.search-container {
+  margin-bottom: 24px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 14px 16px;
+  font-size: 14px;
+  border: 1px solid var(--accent);
+  border-radius: 8px;
+  font-family: inherit;
+  max-width: 600px;
+  margin: 0 auto;
+  display: block;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--secondary);
+  box-shadow: 0 0 0 3px rgba(139, 123, 107, 0.1);
+}
+
+.categories-filter {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+
+.category-btn {
+  padding: 10px 20px;
+  border: 1.5px solid var(--accent);
+  background: white;
+  color: var(--secondary);
+  border-radius: 24px;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+
+.category-btn:hover {
+  border-color: var(--secondary);
+}
+
+.category-btn.active {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
 }
 
 .section {
@@ -119,6 +178,34 @@
   color: #D32F2F;
 }
 
+.empty-state {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.empty-state p {
+  font-size: 16px;
+  color: var(--text-light);
+  margin-bottom: 16px;
+}
+
+.reset-btn {
+  padding: 10px 24px;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.2s;
+}
+
+.reset-btn:hover {
+  background: #2a2a2a;
+}
+
 .info-section {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -167,5 +254,14 @@
   .products-grid {
     grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
     gap: 16px;
+  }
+
+  .categories-filter {
+    gap: 8px;
+  }
+
+  .category-btn {
+    padding: 8px 16px;
+    font-size: 12px;
   }
 }

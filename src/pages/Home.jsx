@@ -2,12 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { productService, bannerService } from '../services/api';
 import '../styles/Home.css';
 
-const API_BASE_URL = `${import.meta.env.VITE_API_URL || 'http://localhost:3000'}/api`;
-
 export const Home = () => {
   const [products, setProducts] = useState([]);
   const [banners, setBanners] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedCategory, setSelectedCategory] = useState('All');
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const CATEGORIES = ['All', 'Tops', 'Bottoms', 'Dresses', 'Accessories', 'Outerwear'];
 
   useEffect(() => {
     loadData();
@@ -18,13 +20,10 @@ export const Home = () => {
       }
     };
     const refreshInterval = window.setInterval(loadData, 30000);
-    const inventoryEvents = new EventSource(`${API_BASE_URL}/products/events`);
-    inventoryEvents.addEventListener('inventory-updated', loadData);
     document.addEventListener('visibilitychange', refreshWhenVisible);
 
     return () => {
       window.clearInterval(refreshInterval);
-      inventoryEvents.close();
       document.removeEventListener('visibilitychange', refreshWhenVisible);
     };
   }, []);
@@ -44,6 +43,23 @@ export const Home = () => {
     }
   };
 
+  const filteredProducts = products
+    .filter(p => {
+      // Category filter
+      if (selectedCategory !== 'All' && p.category !== selectedCategory) {
+        return false;
+      }
+      // Search filter
+      if (searchQuery.trim()) {
+        return (
+          p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          p.description?.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+      }
+      return true;
+    })
+    .slice(0, 8);
+
   if (loading) {
     return <div className="loading">Loading...</div>;
   }
@@ -55,32 +71,77 @@ export const Home = () => {
         <div className="hero-content">
           <h1>New Collection</h1>
           <p>Discover our latest curated selection</p>
-          <a href="#products" className="cta-button">Shop Now</a>
+          <a href="#products" className="cta-button" onClick={() => {
+            setSelectedCategory('All');
+            setSearchQuery('');
+          }}>Shop Now</a>
         </div>
       </div>
 
+      {/* Search & Filter */}
+      <section className="search-section">
+        <div className="search-container">
+          <input
+            type="text"
+            placeholder="Search products..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="search-input"
+          />
+        </div>
+
+        <div className="categories-filter">
+          {CATEGORIES.map(category => (
+            <button
+              key={category}
+              className={`category-btn ${selectedCategory === category ? 'active' : ''}`}
+              onClick={() => setSelectedCategory(category)}
+            >
+              {category}
+            </button>
+          ))}
+        </div>
+      </section>
+
       {/* Featured Products */}
       <section id="products" className="section">
-        <h2>Featured Products</h2>
+        <h2>
+          {searchQuery ? `Search Results (${filteredProducts.length})` : `${selectedCategory === 'All' ? 'Featured' : selectedCategory} Products`}
+        </h2>
         <div className="products-grid">
-          {products.slice(0, 8).map((product) => (
-            <a key={product.id} href={`/product/${product.id}`} className="product-card">
-              {product.image_url ? (
-                <img src={product.image_url} alt={product.name} />
-              ) : (
-                <div className="product-image-placeholder">✨</div>
-              )}
-              <div className="product-info">
-                <h3>{product.name}</h3>
-                <p className="price">${product.price}</p>
-                {product.quantity_available > 0 ? (
-                  <span className="badge in-stock">In Stock</span>
+          {filteredProducts.length > 0 ? (
+            filteredProducts.map((product) => (
+              <a key={product.id} href={`/product/${product.id}`} className="product-card">
+                {product.image_url ? (
+                  <img src={product.image_url} alt={product.name} />
                 ) : (
-                  <span className="badge out-of-stock">Out of Stock</span>
+                  <div className="product-image-placeholder">✨</div>
                 )}
-              </div>
-            </a>
-          ))}
+                <div className="product-info">
+                  <h3>{product.name}</h3>
+                  <p className="price">${product.price}</p>
+                  {product.quantity_available > 0 ? (
+                    <span className="badge in-stock">In Stock</span>
+                  ) : (
+                    <span className="badge out-of-stock">Out of Stock</span>
+                  )}
+                </div>
+              </a>
+            ))
+          ) : (
+            <div className="empty-state">
+              <p>No products found</p>
+              <button 
+                className="reset-btn"
+                onClick={() => {
+                  setSearchQuery('');
+                  setSelectedCategory('All');
+                }}
+              >
+                Reset filters
+              </button>
+            </div>
+          )}
         </div>
       </section>
 

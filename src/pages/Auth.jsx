@@ -10,6 +10,22 @@ export const Login = () => {
   const [form, setForm] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
 
+  const getErrorMessage = (error) => {
+    if (error.response?.status === 401) {
+      return 'Invalid email or password';
+    }
+    if (error.response?.status === 404) {
+      return 'Account not found';
+    }
+    if (error.response?.data?.error) {
+      return error.response.data.error;
+    }
+    if (error.message === 'Network Error') {
+      return 'Unable to connect. Please check your internet connection.';
+    }
+    return 'Login failed. Please try again.';
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -18,7 +34,7 @@ export const Login = () => {
       await login(form.email, form.password);
       navigate('/');
     } catch (err) {
-      setError(err.response?.data?.error || 'Login failed');
+      setError(getErrorMessage(err));
     } finally {
       setLoading(false);
     }
@@ -36,6 +52,7 @@ export const Login = () => {
             value={form.email}
             onChange={(e) => setForm({ ...form, email: e.target.value })}
             required
+            disabled={loading}
           />
           <input
             type="password"
@@ -43,6 +60,7 @@ export const Login = () => {
             value={form.password}
             onChange={(e) => setForm({ ...form, password: e.target.value })}
             required
+            disabled={loading}
           />
           <button type="submit" disabled={loading}>
             {loading ? 'Logging in...' : 'Login'}
@@ -70,8 +88,41 @@ export const Register = () => {
     address: '',
   });
 
+  const validateForm = () => {
+    if (form.password.length < 6) {
+      return 'Password must be at least 6 characters';
+    }
+    if (!form.email.includes('@')) {
+      return 'Please enter a valid email';
+    }
+    return null;
+  };
+
+  const getErrorMessage = (error) => {
+    if (error.response?.status === 409) {
+      return 'Email already registered. Please login instead.';
+    }
+    if (error.response?.status === 400) {
+      return error.response.data?.error || 'Please fill in all required fields correctly';
+    }
+    if (error.response?.data?.error) {
+      return error.response.data.error;
+    }
+    if (error.message === 'Network Error') {
+      return 'Unable to connect. Please check your internet connection.';
+    }
+    return 'Registration failed. Please try again.';
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    const validationError = validateForm();
+    if (validationError) {
+      setError(validationError);
+      return;
+    }
+
     setLoading(true);
     setError('');
     try {
@@ -85,7 +136,7 @@ export const Register = () => {
       );
       navigate('/');
     } catch (err) {
-      setError(err.response?.data?.error || 'Registration failed');
+      setError(getErrorMessage(err));
     } finally {
       setLoading(false);
     }
@@ -103,13 +154,15 @@ export const Register = () => {
             value={form.email}
             onChange={(e) => setForm({ ...form, email: e.target.value })}
             required
+            disabled={loading}
           />
           <input
             type="password"
-            placeholder="Password"
+            placeholder="Password (min 6 characters)"
             value={form.password}
             onChange={(e) => setForm({ ...form, password: e.target.value })}
             required
+            disabled={loading}
           />
           <input
             type="text"
@@ -117,6 +170,7 @@ export const Register = () => {
             value={form.firstName}
             onChange={(e) => setForm({ ...form, firstName: e.target.value })}
             required
+            disabled={loading}
           />
           <input
             type="text"
@@ -124,17 +178,20 @@ export const Register = () => {
             value={form.lastName}
             onChange={(e) => setForm({ ...form, lastName: e.target.value })}
             required
+            disabled={loading}
           />
           <input
             type="tel"
             placeholder="Phone Number"
             value={form.phoneNumber}
             onChange={(e) => setForm({ ...form, phoneNumber: e.target.value })}
+            disabled={loading}
           />
           <textarea
             placeholder="Address"
             value={form.address}
             onChange={(e) => setForm({ ...form, address: e.target.value })}
+            disabled={loading}
           />
           <button type="submit" disabled={loading}>
             {loading ? 'Registering...' : 'Register'}
