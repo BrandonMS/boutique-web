@@ -10,6 +10,7 @@ export const Checkout = () => {
   const { items, getTotal, clearCart } = useCart();
   const { token } = useAuth();
   const [loading, setLoading] = useState(false);
+  const [idempotencyKey] = useState(() => crypto.randomUUID());
   const [form, setForm] = useState({
     firstName: '',
     lastName: '',
@@ -43,7 +44,7 @@ export const Checkout = () => {
         quantity: item.quantity,
       }));
 
-      await orderService.createOrder(orderItems, shippingAddress);
+      await orderService.createOrder(orderItems, shippingAddress, idempotencyKey);
       clearCart();
       alert('Order placed successfully!');
       navigate('/orders');

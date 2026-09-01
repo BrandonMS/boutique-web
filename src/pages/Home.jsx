@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { productService, bannerService } from '../services/api';
 import '../styles/Home.css';
 
+const API_BASE_URL = `${import.meta.env.VITE_API_URL || 'http://localhost:3000'}/api`;
+
 export const Home = () => {
   const [products, setProducts] = useState([]);
   const [banners, setBanners] = useState([]);
@@ -16,10 +18,13 @@ export const Home = () => {
       }
     };
     const refreshInterval = window.setInterval(loadData, 30000);
+    const inventoryEvents = new EventSource(`${API_BASE_URL}/products/events`);
+    inventoryEvents.addEventListener('inventory-updated', loadData);
     document.addEventListener('visibilitychange', refreshWhenVisible);
 
     return () => {
       window.clearInterval(refreshInterval);
+      inventoryEvents.close();
       document.removeEventListener('visibilitychange', refreshWhenVisible);
     };
   }, []);

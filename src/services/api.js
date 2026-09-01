@@ -33,8 +33,8 @@ export const productService = {
 
 // Orders
 export const orderService = {
-  createOrder: (items, shippingAddress, merchantId, accessToken) =>
-    apiClient.post('/orders', { items, shippingAddress, merchantId, accessToken }),
+  createOrder: (items, shippingAddress, idempotencyKey) =>
+    apiClient.post('/orders', { items, shippingAddress }, { headers: { 'Idempotency-Key': idempotencyKey } }),
   getOrders: () => apiClient.get('/orders'),
 };
 
