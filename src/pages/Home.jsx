@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { productService, bannerService } from '../services/api';
+import { productService, bannerService, setupInventorySync, closeInventorySync } from '../services/api';
 import '../styles/Home.css';
 
 export const Home = () => {
@@ -8,25 +8,9 @@ export const Home = () => {
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
+  const [lastSync, setLastSync] = useState(null);
 
   const CATEGORIES = ['All', 'Tops', 'Bottoms', 'Dresses', 'Accessories', 'Outerwear'];
-
-  useEffect(() => {
-    loadData();
-
-    const refreshWhenVisible = () => {
-      if (document.visibilityState === 'visible') {
-        loadData();
-      }
-    };
-    const refreshInterval = window.setInterval(loadData, 30000);
-    document.addEventListener('visibilitychange', refreshWhenVisible);
-
-    return () => {
-      window.clearInterval(refreshInterval);
-      document.removeEventListener('visibilitychange', refreshWhenVisible);
-    };
-  }, []);
 
   const loadData = async () => {
     try {
@@ -36,6 +20,7 @@ export const Home = () => {
       ]);
       setProducts(productsRes.data);
       setBanners(bannersRes.data);
+      setLastSync(new Date().toLocaleTimeString());
     } catch (err) {
       console.error('Failed to load data', err);
     } finally {
@@ -43,13 +28,36 @@ export const Home = () => {
     }
   };
 
+  useEffect(() => {
+    loadData();
+
+    // Setup real-time sync with SSE
+    setupInventorySync(loadData);
+
+    // Refresh when page becomes visible
+    const refreshWhenVisible = () => {
+      if (document.visibilityState === 'visible') {
+        loadData();
+      }
+    };
+
+    // Fallback polling every 30 seconds
+    const refreshInterval = window.setInterval(loadData, 30000);
+    document.addEventListener('visibilitychange', refreshWhenVisible);
+
+    // Cleanup
+    return () => {
+      window.clearInterval(refreshInterval);
+      document.removeEventListener('visibilitychange', refreshWhenVisible);
+      closeInventorySync();
+    };
+  }, []);
+
   const filteredProducts = products
     .filter(p => {
-      // Category filter
       if (selectedCategory !== 'All' && p.category !== selectedCategory) {
         return false;
       }
-      // Search filter
       if (searchQuery.trim()) {
         return (
           p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -88,6 +96,7 @@ export const Home = () => {
             onChange={(e) => setSearchQuery(e.target.value)}
             className="search-input"
           />
+          {lastSync && <span className="sync-indicator">✓ Synced at {lastSync}</span>}
         </div>
 
         <div className="categories-filter">

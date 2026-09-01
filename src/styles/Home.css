@@ -64,6 +64,15 @@
   box-shadow: 0 0 0 3px rgba(139, 123, 107, 0.1);
 }
 
+.sync-indicator {
+  display: block;
+  text-align: center;
+  font-size: 12px;
+  color: #6B8E23;
+  margin-top: 8px;
+  font-weight: 600;
+}
+
 .categories-filter {
   display: flex;
   gap: 12px;
